@@ -46,8 +46,20 @@ df["Price"]=df["Price"].astype(int)       # typeni int ga aylantiradi
 # print(total_sale)
 
 #3
-max_sale_prod=df.groupby("Product")["Quantity"].sum().idxmax()
-max_sale_quant=df.groupby("Product")["Quantity"].sum().max()
-print(max_sale_prod)
-print()
-print(max_sale_quant)
+# max_sale_prod=df.groupby("Product")["Quantity"].sum().idxmax()
+# max_sale_quant=df.groupby("Product")["Quantity"].sum().max()
+# print(max_sale_prod)
+# print()
+# print(max_sale_quant)
+
+sale_summary=df.groupby('Product')['Quantity'].sum()
+max_prod=sale_summary.idxmax()
+max_quantity=sale_summary.max()
+
+result=pd.DataFrame({
+    "Product":[max_prod],
+    "Quantity":[max_quantity]
+})
+
+print(result)
+
