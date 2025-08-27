@@ -28,6 +28,7 @@ plt.title('Kategoriya bo‘yicha umumiy savdo')
 plt.xlabel('Kategoriya')
 plt.ylabel('Umumiy savdo')
 
-# Grafikni ko‘rsatish
+# Grafikni ko‘rsatish ...
 plt.tight_layout()
-plt.show()
+# plt.show()
+#bu gitga 27.08.2025 yil kuni yuklandi
