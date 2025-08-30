@@ -9,11 +9,31 @@
 # for i in range(1, 21):
 #     print(i, is_power_of_two_division(i))
 
+'''
+with open("sales_transactions.csv", encoding="utf-8") as f:
+    print(f.read(200))
+
+
+import csv
+with open("sales_transactions.csv", encoding="utf-8") as f:
+    dialect = csv.Sniffer().sniff(f.read(2000))
+    print("Ajratgich:", dialect.delimiter)    # ajratgichni aniqlash
+
+with open("sales_transactions.csv", encoding="utf-8") as f:
+    data = f.read()
+
+# Barcha ; ni , ga almashtirish
+data = data.replace(";", ",")
+
+with open("sales_transactions_clean.csv", "w", encoding="utf-8") as f:
+    f.write(data)
+'''
+
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import random
-
+'''
 random.seed(42)
 np.random.seed(42)
 
@@ -73,15 +93,15 @@ for i in range(1, n+1):
         "payment_method": payment,
         "returned": returned
     })
-# df = pd.DataFrame(rows)
+df = pd.DataFrame(rows)
 # print("✅ Fayl yaratildi: sales_transactions.csv")
-
+'''
 pd.set_option("display.max_columns",None)
 
 # df.to_csv("sales_transactions.csv", index=False)
-# df.to_csv("sales_transactions.csv", sep=";", encoding="utf-8", index=False, float_format="%.2f")
-# df=pd.read_csv(r"C:\Users\Abubakir\pandas_projects\sales_transactions.csv", sep=";", encoding='utf-8-sig',on_bad_lines='skip')
-# df=pd.read_csv(r"C:\Users\Abubakir\pandas_projects\sales_transactions.csv", encoding='utf-8')
+# df.to_csv("sales_transactions2.csv", sep=";", encoding="utf-8", index=False, float_format="%.2f")
+# df=pd.read_csv(r"C:\Users\Abubakir\pandas_projects\sales_transactions.csv",  encoding='utf-8-sig',on_bad_lines='skip')
+df=pd.read_csv(r"C:\Users\Abubakir\pandas_projects\sales_transactions2.csv", sep=";", encoding='latin1')
 
 #1
 # print(df.info())
@@ -103,9 +123,9 @@ pd.set_option("display.max_columns",None)
 # print(df[["year", "month", "date", "day"]])
 # print(df[['orderdatetime', 'year', 'month']].head())
 # print(df.head())
-'''
+
 #column larni oddiy va ustun shaklida ko'rish
-print(df.head())
+# print(df.head(5)) 
 # sss=pd.DataFrame(df.columns, columns=['columns'])
 # sss.index=sss.index+1
 # sss.index.name="index"
@@ -115,7 +135,7 @@ print(df.head())
 # df['total_amount']=pd.to_numeric(df['total_amount'], errors="coerce")
 # total_sum=df.groupby(['month'])['total_amount'].sum()
 # print(total_sum)
-#3/2
+#
 # total_sum2=df.groupby('category')['total_amount'].sum()
 # print(total_sum2)
 
@@ -129,34 +149,43 @@ print(df.head())
 # )
 # print(pivot_table)
 
+# 3/2
 # prod_by_sale=df.groupby('product')['quantity'].sum().sort_values(ascending=False).head(5)
 # print(prod_by_sale)
-print()
-# max_sale_prod=df.groupby('product')['quantity'].sum().sort_values(ascending=False).head(5)
-# print(max_sale_prod)
+# print()
+# # max_sale_prod=df.groupby('product')['quantity'].sum().sort_values(ascending=False).head(5)
+# # print(max_sale_prod)
 
-sales=df.groupby('product')['quantity'].sum().sort_values(ascending=False)
+# sales=df.groupby('product')['quantity'].sum().sort_values(ascending=False)
 # print(sales)
-top5_values1 = pd.unique(sales.sort_values(ascending=True).values)[:5]
-top5_values2 = pd.unique(sales.sort_values(ascending=False).values)[:5]
-print(top5_values1)
-print(top5_values2)
+# # top5_values1 = pd.unique(sales.sort_values(ascending=True).values)[:5]
+# top5_values2 = pd.unique(sales.sort_values(ascending=False).values)[:5]
+# # print(top5_values1)
+# # print(top5_values2)
 
-prod_by_sale2=sales[sales.isin(top5_values2)]
-print(prod_by_sale2)'''
+# prod_by_sale2=sales[sales.isin(top5_values2)]
+# print(prod_by_sale2)
 
-import csv
-with open("sales_transactions.csv", encoding="utf-8") as f:
-    dialect = csv.Sniffer().sniff(f.read(2000))
-    print("Ajratgich:", dialect.delimiter)
+#4
+# count_order=df.groupby("customer_id")['quantity'].sum()
+# print('count_order: ' , count_order)
 
+# AOV=df['total_amount'].sum()/df['order_id'].nunique()
+# print('AOV: ',AOV)
 
+count_order2=df.groupby('customer_id')['order_id'].nunique()
+print('count_order2: ',count_order2)
 
+AOV2=df.groupby('customer_id')['total_amount'].sum()/count_order2
+print('AOV2: ',AOV2)
 
+# 1) Har bir customer_id uchun buyurtmalar soni
+count_order = df.groupby("customer_id")["order_id"].nunique()
+print(count_order)
 
-
-
-
+# 2) Har bir customer_id uchun o'rtacha chek (AOV)
+aov = df.groupby("customer_id")["total_amount"].sum() / df.groupby("customer_id")["order_id"].nunique()
+print(aov)
 
 
 
@@ -168,12 +197,12 @@ with open("sales_transactions.csv", encoding="utf-8") as f:
 
 
 '''
-Faylni pandas bilan yuklang va ustun turlarini tekshiring.
-order_date ustunini datetime ga aylantiring va year hamda month ustunlarini yarating.
-Umumiy savdo (total_amount) bo‘yicha:
-Oyga va kategoriya bo‘yicha jami summa (pivot jadval yoki groupby).
-Eng ko‘p sotilgan 5 ta mahsulotni toping (quantity bo‘yicha).
-Mijozlar bo‘yicha tahlil:
+1. Faylni pandas bilan yuklang va ustun turlarini tekshiring.
+2. order_date ustunini datetime ga aylantiring va year hamda month ustunlarini yarating.
+3. Umumiy savdo (total_amount) bo‘yicha:
+3/1. Oyga va kategoriya bo‘yicha jami summa (pivot jadval yoki groupby).
+3/2. Eng ko‘p sotilgan 5 ta mahsulotni toping (quantity bo‘yicha).
+4. Mijozlar bo‘yicha tahlil:
 Har bir customer_id uchun jami buyurtma soni va o‘rtacha chek (average_order_value).  
 Top 10 eng katta mijozlarni aniqlang (jami sarf bo‘yicha).
 Qaytargan buyurtmalar (returned=True) tahlili:
