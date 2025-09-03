@@ -122,7 +122,7 @@ df=pd.read_csv(r"C:\Users\Abubakir\pandas_projects\sales_transactions2.csv", sep
 # print(df["year"], df["month"], df["date"], df["day"])
 # print(df[["year", "month", "date", "day"]])
 # print(df[['orderdatetime', 'year', 'month']].head())
-# print(df.head())
+print(df.head())
 
 #column larni oddiy va ustun shaklida ko'rish
 # print(df.head(5)) 
@@ -173,21 +173,19 @@ df=pd.read_csv(r"C:\Users\Abubakir\pandas_projects\sales_transactions2.csv", sep
 # AOV=df['total_amount'].sum()/df['order_id'].nunique()
 # print('AOV: ',AOV)
 
-count_order2=df.groupby('customer_id')['order_id'].nunique()
-print('count_order2: ',count_order2)
+# count_order2=df.groupby('customer_id')['order_id'].nunique()
+# print('count_order2: ',count_order2)
 
-AOV2=df.groupby('customer_id')['total_amount'].sum()/count_order2
-print('AOV2: ',AOV2)
-
-# 1) Har bir customer_id uchun buyurtmalar soni
-count_order = df.groupby("customer_id")["order_id"].nunique()
-print(count_order)
-
-# 2) Har bir customer_id uchun o'rtacha chek (AOV)
-aov = df.groupby("customer_id")["total_amount"].sum() / df.groupby("customer_id")["order_id"].nunique()
-print(aov)
+# AOV2=df.groupby('customer_id')['total_amount'].sum()/count_order2
+# print('AOV2: ',AOV2)
 
 
+# pd.set_option('display.max_rows', None)
+
+clients=df.groupby('customer_id')['total_amount'].sum().sort_values(ascending=False).head(10).reset_index()
+clients.index=clients.index+1
+print()
+print(clients)
 
 
 
