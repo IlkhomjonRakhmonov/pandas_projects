@@ -122,7 +122,7 @@ df=pd.read_csv(r"C:\Users\Abubakir\pandas_projects\sales_transactions2.csv", sep
 # print(df["year"], df["month"], df["date"], df["day"])
 # print(df[["year", "month", "date", "day"]])
 # print(df[['orderdatetime', 'year', 'month']].head())
-print(df.head())
+# print(df.head(5))
 
 #column larni oddiy va ustun shaklida ko'rish
 # print(df.head(5)) 
@@ -179,13 +179,46 @@ print(df.head())
 # AOV2=df.groupby('customer_id')['total_amount'].sum()/count_order2
 # print('AOV2: ',AOV2)
 
-
 # pd.set_option('display.max_rows', None)
 
-clients=df.groupby('customer_id')['total_amount'].sum().sort_values(ascending=False).head(10).reset_index()
-clients.index=clients.index+1
-print()
-print(clients)
+#5
+# clients=df.groupby('customer_id')['total_amount'].sum().sort_values(ascending=False).head(10).reset_index()
+# clients.index=clients.index+1
+# print()
+# print(clients)
+
+#6 
+# returned_prod=df.query('returned==True')
+# returned_prod.loc["jami"]=returned_prod.sum()
+# print(returned_prod)
+
+# retrnd=df.query('returned==True')[['order_id', 'returned','product','category']]
+# print(retrnd)
+#6/1.
+#total_order
+# cat_returned=df.groupby('category')['returned'].sum().sort_values(ascending=False)     #True larni sanaydi
+# cat_returned.loc['Jami']=cat_returned.sum()
+# print(cat_returned)
+# print()
+# cat_not_rtn=df.groupby('category')['returned'].apply(lambda x: (x==False).sum()).sort_values(ascending=False)  # Falselarni sanaydi
+# cat_not_rtn.loc["Jami"]=cat_not_rtn.sum()
+# print(cat_not_rtn)
+# 6/2
+total_order=len(df)
+rtrnd_order=(df['returned']==True).sum()
+return_rate=rtrnd_order/total_order*100
+print("birinchi usul: ")
+print(f"{return_rate  : .2f} %")
+print("ikkinchi usul: ")
+print("{:.1f} %"   .format(return_rate))
+print(" uchinichi usul: ")
+print("javobi: %.2f%%" % return_rate)
+
+# print("Qaytarilgan buyurtmalar foizi: {:.2f}%".format(return_rate))
+# print("Qaytarilgan buyurtmalar foizi: %.2f%%" % return_rate)
+
+
+
 
 
 
@@ -202,8 +235,8 @@ print(clients)
 3/2. Eng ko‘p sotilgan 5 ta mahsulotni toping (quantity bo‘yicha).
 4. Mijozlar bo‘yicha tahlil:
 Har bir customer_id uchun jami buyurtma soni va o‘rtacha chek (average_order_value).  
-Top 10 eng katta mijozlarni aniqlang (jami sarf bo‘yicha).
-Qaytargan buyurtmalar (returned=True) tahlili:
+5. Top 10 eng katta mijozlarni aniqlang (jami sarf bo‘yicha).
+6. Qaytargan buyurtmalar (returned=True) tahlili:
 Qaytarish foizi umumiy buyurtmalarga nisbatan.
 Qaytarishlar qaysi kategoriyalarda ko‘proq kuzatiladi?
 To‘lov usuli bo‘yicha:
